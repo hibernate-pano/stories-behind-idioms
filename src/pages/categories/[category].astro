@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import IdiomCard from '~/components/IdiomCard.astro';
+
+export async function getStaticPaths() {
+  const idioms = await getCollection('idioms');
+  const set = new Set<string>();
+  for (const e of idioms) for (const c of e.data.categories) set.add(c);
+  return [...set].map((category) => ({ params: { category } }));
+}
+
+const { category } = Astro.params;
+const idioms = await getCollection('idioms');
+const matched = idioms.filter((e) => e.data.categories.includes(category as string));
+---
+<BaseLayout title={`${category} · 成语背后的人和事`}>
+  <main class="cat-detail">
+    <h1>{category}</h1>
+    <p class="meta">{matched.length} 篇</p>
+    {matched.map((e) => <IdiomCard entry={e} compact />)}
+  </main>
+</BaseLayout>
+
+<style>
+  .cat-detail {
+    max-width: var(--container-narrow);
+    margin: 0 auto;
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+  h1 {
+    font-family: var(--font-body);
+  }
+  .meta {
+    color: var(--color-muted);
+  }
+</style>

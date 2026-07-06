@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+const idioms = await getCollection('idioms');
+const counts = new Map<string, number>();
+for (const e of idioms) {
+  for (const c of e.data.categories) {
+    counts.set(c, (counts.get(c) ?? 0) + 1);
+  }
+}
+const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+---
+<BaseLayout title="主题分类 · 成语背后的人和事">
+  <main class="cats">
+    <h1>主题分类</h1>
+    <ul>
+      {sorted.map(([name, n]) => (
+        <li>
+          <a href={`/categories/${encodeURIComponent(name)}/`}>{name}</a>
+          <span class="count">{n}</span>
+        </li>
+      ))}
+    </ul>
+  </main>
+</BaseLayout>
+
+<style>
+  .cats {
+    max-width: var(--container-narrow);
+    margin: 0 auto;
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+  h1 {
+    text-align: center;
+    font-family: var(--font-body);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: calc(var(--space-unit) * 2) 0;
+    border-bottom: 1px dashed var(--color-line);
+  }
+  .count {
+    color: var(--color-muted);
+  }
+</style>
