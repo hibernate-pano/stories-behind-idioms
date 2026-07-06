@@ -1,0 +1,35 @@
+---
+interface Props {
+  summary: string;
+}
+const { summary } = Astro.props;
+---
+<aside class="fate-teaser" aria-label="人物结局预告">
+  <span class="label">后来怎么样了</span>
+  <p class="fate-summary">{summary}</p>
+</aside>
+
+<style>
+  .fate-teaser {
+    background: var(--color-accent-bg);
+    border-left: 4px solid var(--color-accent);
+    padding: calc(var(--space-unit) * 3) calc(var(--space-unit) * 4);
+    margin: calc(var(--space-unit) * 6) 0;
+    border-radius: 4px;
+    font-family: var(--font-body);
+  }
+  .label {
+    color: var(--color-accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: var(--space-unit);
+  }
+  .fate-summary {
+    margin: 0;
+    font-weight: 600;
+    font-size: 18px;
+  }
+</style>

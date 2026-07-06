@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  current: CollectionEntry<'idioms'>;
+  all: CollectionEntry<'idioms'>[];
+}
+const { current, all } = Astro.props;
+const others = all.filter((e) => e.data.slug !== current.data.slug);
+const next = others.length > 0 ? others[Math.floor(Math.random() * others.length)] : null;
+---
+{next && (
+  <a class="random-next" href={`/idiom/${next.data.slug}/`}>
+    下一篇随机：{next.data.title} →
+  </a>
+)}
+<style>
+  .random-next {
+    display: inline-block;
+    margin-top: calc(var(--space-unit) * 6);
+    padding: calc(var(--space-unit) * 2) calc(var(--space-unit) * 3);
+    border: 1px solid var(--color-accent);
+    border-radius: 4px;
+    color: var(--color-accent);
+  }
+</style>

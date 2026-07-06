@@ -1,0 +1,27 @@
+@import './theme.css';
+
+* { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-ui);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+a {
+  color: var(--color-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-line);
+}
+
+a:hover {
+  border-bottom-color: var(--color-accent);
+}

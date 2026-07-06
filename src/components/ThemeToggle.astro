@@ -1,0 +1,32 @@
+---
+---
+<button class="theme-toggle" type="button" aria-label="切换暗色模式">
+  <span class="light">☀︎</span>
+  <span class="dark">☾</span>
+</button>
+
+<script>
+  // Initial data-theme is set by an inline script in BaseLayout (pre-paint).
+  // This handler only flips the persisted theme on user click.
+  const KEY = 'theme';
+  const root = document.documentElement;
+  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (_) {}
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-fg);
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+  .dark { display: none; }
+  [data-theme='dark'] .light { display: none; }
+  [data-theme='dark'] .dark { display: inline; }
+</style>

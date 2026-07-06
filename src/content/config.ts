@@ -1,0 +1,37 @@
+import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
+
+// NOTE: This is the actual production schema Astro uses to validate content
+// collection entries at build time. It intentionally diverges from the mirror
+// schema in scripts/validate-content.ts:
+//   - This file uses Astro-flavored zod (path/refine shape for IDE errors).
+//   - scripts/validate-content.ts adds an extra refine requiring
+//     contributed_by === 'reviewed' to have a valid reviewed_date. That extra
+//     gate runs as a prebuild step (npm run prebuild) before Astro parses
+//     entries, so we don't repeat it here to avoid the rule drift noise in
+//     both schemas.
+
+const idiomSchema = z.object({
+  title: z.string().min(2).max(8),
+  pinyin: z.string().min(1),
+  slug: z.string().regex(/^[a-z0-9-]+$/, 'slug must be kebab-case latin'),
+  era: z.string().optional(),
+  era_year: z.number().int().optional(),
+  person: z.string().optional(),
+  has_fate: z.boolean(),
+  fate_summary: z.string().optional(),
+  categories: z.array(z.string()).min(1),
+  sources: z.array(z.string()).min(1),
+  contributed_by: z.string().default('ai-draft-v1'),
+  reviewed_date: z.string().optional(),
+}).refine(
+  (data) => !data.has_fate || (data.fate_summary && data.fate_summary.length > 0),
+  { message: 'has_fate=true 时必须填 fate_summary', path: ['fate_summary'] }
+);
+
+const idioms = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './content/idioms' }),
+  schema: idiomSchema,
+});
+
+export const collections = { idioms };

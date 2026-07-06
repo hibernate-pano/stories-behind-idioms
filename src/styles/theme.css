@@ -1,0 +1,40 @@
+:root {
+  /* light (default) */
+  --color-bg: #FAF7F0;
+  --color-fg: #26241F;
+  --color-accent: #A93028;
+  --color-accent-bg: rgba(169, 48, 40, 0.08);
+  --color-muted: #8B847A;
+  --color-line: #E8E2D4;
+  --color-card-bg: #FFFFFF;
+
+  /* typography
+     Self-hosted webfonts (LXGW WenKai etc.) are planned but not yet shipped
+     under public/fonts/. Until they land, fall back gracefully to whatever
+     serif CJK + system fonts the user's OS provides. The stack is ordered
+     by quality: macOS → cross-platform → final CSS generic. */
+  --font-body: 'Source Han Serif SC', 'Noto Serif CJK SC', 'PingFang SC', 'Songti SC', serif;
+  --font-ui: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-latin: 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
+
+  /* type scale */
+  --fs-body: 18px;
+  --fs-h2: 28px;
+  --fs-h1: 64px;
+  --lh-body: 1.8;
+
+  /* layout */
+  --container-reading: 680px;
+  --container-narrow: 720px;
+  --space-unit: 8px;
+}
+
+[data-theme='dark'] {
+  --color-bg: #1A1814;
+  --color-fg: #ECE6D7;
+  --color-accent: #D76961;
+  --color-accent-bg: rgba(215, 105, 97, 0.12);
+  --color-muted: #9A948A;
+  --color-line: #2F2A23;
+  --color-card-bg: #24201A;
+}

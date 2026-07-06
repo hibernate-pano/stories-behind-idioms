@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'idioms'>;
+  compact?: boolean;
+}
+const { entry, compact = false } = Astro.props;
+const { title, pinyin, slug, has_fate, fate_summary, era } = entry.data;
+---
+<a class:list={['idiom-card', { compact }]} href={`/idiom/${slug}/`}>
+  <div class="header">
+    <span class="title">{title}</span>
+    <span class="pinyin">{pinyin}</span>
+  </div>
+  {has_fate && fate_summary && (
+    <p class="fate">{fate_summary}</p>
+  )}
+  {!has_fate && era && (
+    <p class="meta">{era}</p>
+  )}
+</a>
+
+<style>
+  .idiom-card {
+    display: block;
+    padding: calc(var(--space-unit) * 3);
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    background: var(--color-card-bg);
+    margin-bottom: calc(var(--space-unit) * 2);
+  }
+  .idiom-card:hover {
+    border-color: var(--color-accent);
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .title {
+    font-family: var(--font-body);
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .pinyin {
+    font-family: var(--font-latin);
+    color: var(--color-muted);
+    font-size: 14px;
+  }
+  .fate {
+    color: var(--color-accent);
+    margin: var(--space-unit) 0 0;
+    font-size: 14px;
+  }
+  .meta {
+    color: var(--color-muted);
+    margin: var(--space-unit) 0 0;
+    font-size: 14px;
+  }
+  .compact .title {
+    font-size: 18px;
+  }
+</style>

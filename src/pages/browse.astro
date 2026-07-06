@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { groupByInitial } from '~/utils/slug';
+
+const idioms = await getCollection('idioms');
+const groups = groupByInitial(idioms);
+---
+<BaseLayout title="字母索引 · 成语背后的人和事">
+  <main class="browse">
+    <h1>字母索引</h1>
+    <nav class="alpha-jump">
+      {[...groups.keys()].map((k) => (
+        <a href={`#${k}`}>{k}</a>
+      ))}
+    </nav>
+    {groups.size === 0 ? (
+      <p>暂无内容。</p>
+    ) : (
+      [...groups.entries()].map(([letter, items]) => (
+        <section id={letter}>
+          <h2>{letter}</h2>
+          <ul>
+            {items.map((e) => (
+              <li>
+                <a href={`/idiom/${e.data.slug}/`}>
+                  <strong>{e.data.title}</strong>
+                  <span class="pinyin">{e.data.pinyin}</span>
+                </a>
+                {e.data.has_fate && e.data.fate_summary && (
+                  <p class="fate">{e.data.fate_summary}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .browse {
+    max-width: var(--container-narrow);
+    margin: 0 auto;
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+  h1 {
+    text-align: center;
+    font-family: var(--font-body);
+  }
+  .alpha-jump {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-unit);
+    margin-bottom: calc(var(--space-unit) * 6);
+    flex-wrap: wrap;
+  }
+  .alpha-jump a {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+  }
+  section {
+    margin-bottom: calc(var(--space-unit) * 5);
+  }
+  h2 {
+    font-family: var(--font-body);
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 4px;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    padding: calc(var(--space-unit) * 2) 0;
+    border-bottom: 1px dashed var(--color-line);
+  }
+  li a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-unit);
+    border-bottom: none;
+  }
+  li a strong {
+    font-family: var(--font-body);
+    font-size: 22px;
+  }
+  li a .pinyin {
+    color: var(--color-muted);
+    font-size: 14px;
+  }
+  .fate {
+    color: var(--color-accent);
+    font-size: 14px;
+    margin: 4px 0 0;
+  }
+</style>

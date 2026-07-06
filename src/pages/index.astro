@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import IdiomCard from '~/components/IdiomCard.astro';
+import SearchBar from '~/components/SearchBar.astro';
+import { pickTodayIdiom, pickRecent } from '~/utils/today';
+
+const idioms = await getCollection('idioms');
+const today = pickTodayIdiom(idioms);
+const recent = pickRecent(idioms, 5);
+---
+<BaseLayout title="成语背后的人和事">
+  <main class="home">
+    <section class="hero">
+      <h1>成语背后的人和事</h1>
+      <p>每个成语背后都有故事，每个故事背后都有人，<br/>而每个人最后都有自己的命运。</p>
+    </section>
+
+    <SearchBar />
+
+    {today && (
+      <section class="today">
+        <h2>今日一个</h2>
+        <IdiomCard entry={today} />
+      </section>
+    )}
+
+    {recent.length > 0 && (
+      <section class="recent">
+        <h2>最近定稿</h2>
+        {recent.map((e) => <IdiomCard entry={e} compact />)}
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .home {
+    max-width: var(--container-narrow);
+    margin: 0 auto;
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+  .hero {
+    text-align: center;
+    margin-bottom: calc(var(--space-unit) * 6);
+  }
+  .hero h1 {
+    font-family: var(--font-body);
+    font-size: var(--fs-h1);
+    margin: 0 0 calc(var(--space-unit) * 2);
+  }
+  .hero p {
+    color: var(--color-muted);
+  }
+  section {
+    margin-top: calc(var(--space-unit) * 6);
+    margin-bottom: calc(var(--space-unit) * 2);
+  }
+  h2 {
+    font-family: var(--font-body);
+    font-size: var(--fs-h2);
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: var(--space-unit);
+  }
+</style>
