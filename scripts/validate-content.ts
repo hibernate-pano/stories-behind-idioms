@@ -6,6 +6,14 @@ import { z } from 'zod';
 // Matches src/content/config.ts idiomSchema closely; reviewed_date is z.string()
 // (not Date) so YAML-parsed unquoted date strings like `2026-07-06` don't get
 // coerced into Date objects that would fail validation. See Task 4 fix.
+//
+// NOTE: This schema deliberately diverges from src/content/config.ts by adding
+// the `contributed_by === 'reviewed' ⇒ valid reviewed_date` refine. This extra
+// rule is a prebuild gate that runs BEFORE Astro parses the same entries with
+// its own (slightly stricter) schema. We accept the no-op zod drift because
+// the prebuild validation is the source of truth for reviewed status and we
+// don't want to weaken the production schema by adding a side rule that only
+// matters to this script.
 const schema = z.object({
   title: z.string().min(2).max(8),
   pinyin: z.string().min(1),

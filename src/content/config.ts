@@ -1,6 +1,16 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+// NOTE: This is the actual production schema Astro uses to validate content
+// collection entries at build time. It intentionally diverges from the mirror
+// schema in scripts/validate-content.ts:
+//   - This file uses Astro-flavored zod (path/refine shape for IDE errors).
+//   - scripts/validate-content.ts adds an extra refine requiring
+//     contributed_by === 'reviewed' to have a valid reviewed_date. That extra
+//     gate runs as a prebuild step (npm run prebuild) before Astro parses
+//     entries, so we don't repeat it here to avoid the rule drift noise in
+//     both schemas.
+
 const idiomSchema = z.object({
   title: z.string().min(2).max(8),
   pinyin: z.string().min(1),
