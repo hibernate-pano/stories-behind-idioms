@@ -15,6 +15,19 @@ const { title, description = '成语背后的人和事' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script is:inline>
+      // Apply persisted theme before paint to avoid a flash of light mode.
+      // is:inline keeps Astro from bundling this script so it runs synchronously.
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') t = 'light';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (_) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
   </head>
   <body>
     <nav class="top-nav">

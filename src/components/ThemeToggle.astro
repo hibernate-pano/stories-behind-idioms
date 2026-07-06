@@ -6,16 +6,14 @@
 </button>
 
 <script>
+  // Initial data-theme is set by an inline script in BaseLayout (pre-paint).
+  // This handler only flips the persisted theme on user click.
   const KEY = 'theme';
   const root = document.documentElement;
-  function apply(t: 'light' | 'dark') {
-    root.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
-  }
-  apply((localStorage.getItem(KEY) as 'light' | 'dark') ?? 'light');
   document.querySelector('.theme-toggle')?.addEventListener('click', () => {
     const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    apply(next);
-    localStorage.setItem(KEY, next);
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (_) {}
   });
 </script>
 
