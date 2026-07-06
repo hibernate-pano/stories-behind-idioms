@@ -1,0 +1,106 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SearchBar from '~/components/SearchBar.astro';
+
+const q = Astro.url.searchParams.get('q') ?? '';
+---
+<BaseLayout title={`搜索 "${q}" · 成语背后的人和事`}>
+  <main class="search-page">
+    <h1>搜索</h1>
+    <SearchBar initial={q} />
+    <div id="search-results" data-q={q}></div>
+  </main>
+</BaseLayout>
+
+<script>
+  import Fuse from 'fuse.js';
+
+  type Item = {
+    slug: string;
+    title: string;
+    pinyin: string;
+    era?: string;
+    person?: string;
+    fate_summary?: string;
+    categories: string[];
+  };
+
+  const container = document.getElementById('search-results') as HTMLDivElement;
+  // In static mode the pre-rendered HTML cannot see URL query params,
+  // so fall back to reading the live URL from the client.
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q') ?? container.dataset.q ?? '';
+
+  if (!q.trim()) {
+    container.innerHTML = '<p class="empty">输入关键词试试。</p>';
+  } else {
+    fetch('/search-index.json')
+      .then((r) => r.json())
+      .then(({ items }: { items: Item[] }) => {
+        const fuse = new Fuse(items, {
+          keys: ['title', 'pinyin', 'person', 'era', 'fate_summary', 'categories'],
+          includeScore: true,
+          threshold: 0.4,
+        });
+        const results = fuse.search(q, { limit: 30 });
+        if (results.length === 0) {
+          container.innerHTML = '<p class="empty">没有匹配。试试字母索引或分类索引？</p>';
+          return;
+        }
+        container.innerHTML = results
+          .map((r) => `
+            <a class="result" href="/idiom/${r.item.slug}/">
+              <div class="row"><strong>${r.item.title}</strong><span class="pinyin">${r.item.pinyin}</span></div>
+              ${r.item.fate_summary ? `<p class="fate">${r.item.fate_summary}</p>` : ''}
+            </a>
+          `)
+          .join('');
+      });
+  }
+</script>
+
+<style>
+  .search-page {
+    max-width: var(--container-narrow);
+    margin: 0 auto;
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+  h1 { text-align: center; font-family: var(--font-body); }
+  #search-results {
+    margin-top: calc(var(--space-unit) * 6);
+  }
+  .result {
+    display: block;
+    padding: calc(var(--space-unit) * 2);
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    margin-bottom: var(--space-unit);
+    background: var(--color-card-bg);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .result:hover {
+    border-color: var(--color-accent);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .result strong {
+    font-family: var(--font-body);
+    font-size: 22px;
+  }
+  .pinyin {
+    color: var(--color-muted);
+    font-size: 14px;
+  }
+  .fate {
+    color: var(--color-accent);
+    margin: 4px 0 0;
+    font-size: 14px;
+  }
+  .empty {
+    color: var(--color-muted);
+    text-align: center;
+  }
+</style>

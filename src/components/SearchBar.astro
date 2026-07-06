@@ -1,0 +1,42 @@
+---
+interface Props {
+  initial?: string;
+}
+const { initial = '' } = Astro.props;
+---
+<form class="search-form" action="/search" method="get">
+  <input
+    type="search"
+    name="q"
+    value={initial}
+    placeholder="搜索成语、人物、关键词..."
+    autocomplete="off"
+  />
+  <button type="submit">搜索</button>
+</form>
+
+<style>
+  .search-form {
+    display: flex;
+    gap: var(--space-unit);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 4px;
+    background: var(--color-card-bg);
+    color: var(--color-fg);
+    font-size: 16px;
+  }
+  button {
+    padding: 8px 16px;
+    border: 1px solid var(--color-fg);
+    border-radius: 4px;
+    background: var(--color-fg);
+    color: var(--color-bg);
+    cursor: pointer;
+  }
+</style>
