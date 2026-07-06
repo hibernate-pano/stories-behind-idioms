@@ -5,6 +5,9 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  experimental: {
+    contentLayer: true,
+  },
   vite: {
     ssr: {
       noExternal: ['fuse.js'],
