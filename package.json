@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "prebuild": "tsx scripts/validate-content.ts",
-    "build": "astro build && node scripts/postbuild.js",
+    "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "test:watch": "vitest"
