@@ -1,5 +1,6 @@
 ---
 import '~/styles/global.css';
+import ThemeToggle from '~/components/ThemeToggle.astro';
 
 interface Props {
   title: string;
@@ -21,6 +22,7 @@ const { title, description = '成语背后的人和事' } = Astro.props;
       <div class="links">
         <a href="/browse">字母</a>
         <a href="/categories">分类</a>
+        <ThemeToggle />
       </div>
     </nav>
     <slot />
