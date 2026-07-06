@@ -21,12 +21,25 @@ npm run build     # 构建生产版本到 dist/
 
 ## 部署
 
-Cloudflare Pages。每次 push 自动部署。
+Vercel。每次 push 到 `master` 自动部署。
 
-生产域名见 Cloudflare 控制台。
+### 配置步骤
+
+1. 把仓库推到 GitHub
+2. 登录 [vercel.com](https://vercel.com)（用 GitHub 登录）
+3. New Project → Import 仓库
+4. Vercel 自动识别 Astro：Build Command = `npm run build`，Output = `dist`
+5. 点 Deploy
+
+Hobby plan 免费，100GB/月流量，个人项目绰绰有余。生产域名见 Vercel 控制台 — 可绑定自定义域名。
 
 ## 下一步
 
 - 把第一批 30 个种子词陆续写完（每篇 LLM 草稿 + 人工审）
-- 接 Cloudflare Pages 部署
+- 接 Vercel 部署
 - 加 V2: 交叉引用、时间线、订阅（见 spec section 11）
+
+## 下一步
+
+- 把第一批 30 个种子词陆续写完（每篇 LLM 草稿 + 人工审）
+- 接 Vercel 部署（把仓库推上 GitHub，登录 vercel.com，import 仓库）
