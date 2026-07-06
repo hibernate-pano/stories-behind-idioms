@@ -8,10 +8,14 @@
   --color-line: #E8E2D4;
   --color-card-bg: #FFFFFF;
 
-  /* typography */
-  --font-body: 'LXGW WenKai', 'Noto Serif SC', 'Songti SC', Georgia, serif;
-  --font-ui: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
-  --font-latin: 'Source Serif', Georgia, serif;
+  /* typography
+     Self-hosted webfonts (LXGW WenKai etc.) are planned but not yet shipped
+     under public/fonts/. Until they land, fall back gracefully to whatever
+     serif CJK + system fonts the user's OS provides. The stack is ordered
+     by quality: macOS → cross-platform → final CSS generic. */
+  --font-body: 'Source Han Serif SC', 'Noto Serif CJK SC', 'PingFang SC', 'Songti SC', serif;
+  --font-ui: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-latin: 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
 
   /* type scale */
   --fs-body: 18px;
