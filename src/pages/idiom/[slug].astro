@@ -2,6 +2,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import FateBlock from '~/components/FateBlock.astro';
+import RandomNext from '~/components/RandomNext.astro';
 
 export async function getStaticPaths() {
   const idioms = await getCollection('idioms');
@@ -16,6 +17,7 @@ interface Props {
 }
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const idioms = await getCollection('idioms');
 ---
 <BaseLayout title={`${entry.data.title} · 成语故事`}>
   <article class="idiom-page">
@@ -39,6 +41,7 @@ const { Content } = await render(entry);
         {entry.data.sources.map((s) => <li>{s}</li>)}
       </ul>
     </footer>
+    <RandomNext current={entry} all={idioms} />
   </article>
 </BaseLayout>
 
