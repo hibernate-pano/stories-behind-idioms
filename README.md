@@ -24,3 +24,9 @@ npm run build     # 构建生产版本到 dist/
 Cloudflare Pages。每次 push 自动部署。
 
 生产域名见 Cloudflare 控制台。
+
+## 下一步
+
+- 把第一批 30 个种子词陆续写完（每篇 LLM 草稿 + 人工审）
+- 接 Cloudflare Pages 部署
+- 加 V2: 交叉引用、时间线、订阅（见 spec section 11）
