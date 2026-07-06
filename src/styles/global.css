@@ -1,0 +1,12 @@
+:root {
+  --color-bg: #FAF7F0;
+  --color-fg: #26241F;
+  --color-accent: #A93028;
+  --color-muted: #8B847A;
+}
+
+html {
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
