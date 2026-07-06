@@ -1,0 +1,95 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import FateBlock from '~/components/FateBlock.astro';
+
+export async function getStaticPaths() {
+  const idioms = await getCollection('idioms');
+  return idioms.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'idioms'>;
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<BaseLayout title={`${entry.data.title} · 成语故事`}>
+  <article class="idiom-page">
+    <header class="idiom-header">
+      <p class="meta">{entry.data.era}{entry.data.person && ` · ${entry.data.person}`}</p>
+      <h1>{entry.data.title}</h1>
+      <p class="pinyin">{entry.data.pinyin}</p>
+    </header>
+
+    {entry.data.has_fate && entry.data.fate_summary && (
+      <FateBlock summary={entry.data.fate_summary} />
+    )}
+
+    <div class="reading-content">
+      <Content />
+    </div>
+
+    <footer class="sources">
+      <h3>来源</h3>
+      <ul>
+        {entry.data.sources.map((s) => <li>{s}</li>)}
+      </ul>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .idiom-page {
+    max-width: var(--container-reading);
+    margin: 0 auto;
+    padding: calc(var(--space-unit) * 8) calc(var(--space-unit) * 3);
+  }
+  .idiom-header {
+    text-align: center;
+    margin-bottom: calc(var(--space-unit) * 8);
+  }
+  .meta {
+    color: var(--color-muted);
+    font-size: 14px;
+    margin-bottom: var(--space-unit);
+  }
+  h1 {
+    font-family: var(--font-body);
+    font-size: var(--fs-h1);
+    margin: 0;
+    letter-spacing: 0.1em;
+  }
+  .pinyin {
+    font-family: var(--font-latin);
+    color: var(--color-muted);
+    font-size: 18px;
+    margin-top: var(--space-unit);
+  }
+  .reading-content {
+    font-family: var(--font-body);
+  }
+  .reading-content :global(h2) {
+    font-family: var(--font-body);
+    font-size: var(--fs-h2);
+    margin-top: calc(var(--space-unit) * 6);
+  }
+  /* 给「后来怎么样了」段一个独立的强调，匹配 FateBlock */
+  .reading-content :global(h2[id*='后来']) + :global(p),
+  .reading-content :global(h2:has(+ p)) {
+    /* ensure markdown 的 h2 之后段落能受命运色影响 */
+  }
+  .reading-content :global(p) {
+    margin: var(--space-unit) 0;
+  }
+  .sources {
+    margin-top: calc(var(--space-unit) * 8);
+    padding-top: calc(var(--space-unit) * 3);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
+    font-size: 14px;
+  }
+</style>
