@@ -1,12 +1,27 @@
-:root {
-  --color-bg: #FAF7F0;
-  --color-fg: #26241F;
-  --color-accent: #A93028;
-  --color-muted: #8B847A;
-}
+@import './theme.css';
+
+* { box-sizing: border-box; }
 
 html {
-  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  font-family: var(--font-ui);
   background: var(--color-bg);
   color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+a {
+  color: var(--color-fg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-line);
+}
+
+a:hover {
+  border-bottom-color: var(--color-accent);
 }
