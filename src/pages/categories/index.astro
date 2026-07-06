@@ -12,7 +12,7 @@ for (const e of idioms) {
 const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 <BaseLayout title="主题分类 · 成语背后的人和事">
-  <main class="cats">
+  <main id="main" class="cats">
     <h1>主题分类</h1>
     <ul>
       {sorted.map(([name, n]) => (

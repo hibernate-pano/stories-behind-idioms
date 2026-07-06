@@ -17,13 +17,33 @@ interface Props {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const idioms = await getCollection('idioms');
+
+// Estimate reading time from frontmatter without touching the raw body.
+// Title is weighted 2x (idiom name is read twice: head + reading),
+// fate_summary contributes the rest. ~50 chars/min for reflective Chinese prose.
+const readingMinutes = Math.max(
+  1,
+  Math.ceil(
+    (entry.data.title.length * 2 + (entry.data.fate_summary?.length ?? 0)) / 50
+  )
+);
+
+const titleSuffix = entry.data.has_fate ? ' · 命运与故事' : ' · 成语故事';
+const pageTitle = `${entry.data.title}${titleSuffix}`;
+const pageDescription =
+  entry.data.fate_summary ??
+  `${entry.data.era ?? ''}${entry.data.person ? ` · ${entry.data.person}` : ''} 的成语典故`;
 ---
-<BaseLayout title={`${entry.data.title} · 成语故事`}>
-  <article class="idiom-page">
+<BaseLayout title={pageTitle} description={pageDescription} ogType="article">
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <article id="main" class="idiom-page">
     <header class="idiom-header">
-      <p class="meta">{entry.data.era}{entry.data.person && ` · ${entry.data.person}`}</p>
+      <p class="meta">
+        {entry.data.era}{entry.data.person && ` · ${entry.data.person}`}
+      </p>
       <h1>{entry.data.title}</h1>
       <p class="pinyin">{entry.data.pinyin}</p>
+      <p class="reading-time">约 {readingMinutes} 分钟</p>
     </header>
 
     <div class="reading-content">
@@ -38,9 +58,30 @@ const idioms = await getCollection('idioms');
     </footer>
     <RandomNext current={entry} all={idioms} />
   </article>
+
+  <script is:inline>
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+      const bar = document.getElementById('reading-progress');
+      if (bar) bar.style.width = pct + '%';
+    }, { passive: true });
+  </script>
 </BaseLayout>
 
 <style>
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--color-accent);
+    width: 0%;
+    z-index: 100;
+    transition: width 0.1s linear;
+    pointer-events: none;
+  }
   .idiom-page {
     max-width: var(--container-reading);
     margin: 0 auto;
@@ -66,6 +107,13 @@ const idioms = await getCollection('idioms');
     color: var(--color-muted);
     font-size: 18px;
     margin-top: var(--space-unit);
+  }
+  .reading-time {
+    color: var(--color-muted);
+    font-size: 14px;
+    font-family: var(--font-ui);
+    margin-top: var(--space-unit);
+    margin-bottom: 0;
   }
   .reading-content {
     font-family: var(--font-body);

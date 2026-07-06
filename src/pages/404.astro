@@ -7,7 +7,7 @@ const idioms = await getCollection('idioms');
 const pick3 = [...idioms].sort(() => Math.random() - 0.5).slice(0, 3);
 ---
 <BaseLayout title="找不到了 · 成语背后的人和事">
-  <main class="notfound">
+  <main id="main" class="notfound">
     <h1>这一篇还没写</h1>
     <p>暂时没收录这个成语。先看看其他几篇？</p>
     {pick3.map((e) => <IdiomCard entry={e} />)}

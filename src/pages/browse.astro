@@ -7,7 +7,7 @@ const idioms = await getCollection('idioms');
 const groups = groupByInitial(idioms);
 ---
 <BaseLayout title="字母索引 · 成语背后的人和事">
-  <main class="browse">
+  <main id="main" class="browse">
     <h1>字母索引</h1>
     <nav class="alpha-jump">
       {[...groups.keys()].map((k) => (

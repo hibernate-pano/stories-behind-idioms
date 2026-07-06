@@ -29,9 +29,12 @@ const { title, pinyin, slug, has_fate, fate_summary, era } = entry.data;
     border-radius: 4px;
     background: var(--color-card-bg);
     margin-bottom: calc(var(--space-unit) * 2);
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.3s ease;
+    border-bottom: 1px solid var(--color-line);
   }
   .idiom-card:hover {
     border-color: var(--color-accent);
+    transform: translateY(-2px);
   }
   .header {
     display: flex;

@@ -15,7 +15,7 @@ const idioms = await getCollection('idioms');
 const matched = idioms.filter((e) => e.data.categories.includes(category as string));
 ---
 <BaseLayout title={`${category} · 成语背后的人和事`}>
-  <main class="cat-detail">
+  <main id="main" class="cat-detail">
     <h1>{category}</h1>
     <p class="meta">{matched.length} 篇</p>
     {matched.map((e) => <IdiomCard entry={e} compact />)}

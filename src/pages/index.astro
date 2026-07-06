@@ -9,8 +9,8 @@ const idioms = await getCollection('idioms');
 const today = pickTodayIdiom(idioms);
 const recent = pickRecent(idioms, 5);
 ---
-<BaseLayout title="成语背后的人和事">
-  <main class="home">
+<BaseLayout title="成语背后的人和事" ogType="website">
+  <main id="main" class="home">
     <section class="hero">
       <h1>成语背后的人和事</h1>
       <p>每个成语背后都有故事，每个故事背后都有人，<br/>而每个人最后都有自己的命运。</p>

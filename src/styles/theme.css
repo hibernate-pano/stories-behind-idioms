@@ -13,7 +13,7 @@
      under public/fonts/. Until they land, fall back gracefully to whatever
      serif CJK + system fonts the user's OS provides. The stack is ordered
      by quality: macOS → cross-platform → final CSS generic. */
-  --font-body: 'Source Han Serif SC', 'Noto Serif CJK SC', 'PingFang SC', 'Songti SC', serif;
+  --font-body: 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', 'PingFang SC', Georgia, serif;
   --font-ui: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
   --font-latin: 'Iowan Old Style', 'Apple Garamond', Georgia, serif;
 
@@ -27,6 +27,9 @@
   --container-reading: 680px;
   --container-narrow: 720px;
   --space-unit: 8px;
+
+  /* motion */
+  --t-theme: background 0.3s ease, color 0.3s ease, border-color 0.2s ease;
 }
 
 [data-theme='dark'] {

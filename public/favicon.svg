@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="4" fill="#FAF7F0"/>
+  <rect x="2" y="2" width="28" height="28" rx="3" fill="none" stroke="#A93028" stroke-width="1.5"/>
+  <text x="16" y="22" font-family="'Songti SC','Source Han Serif SC','Noto Serif CJK SC','PingFang SC',Georgia,serif" font-size="18" font-weight="600" text-anchor="middle" fill="#A93028">凿</text>
+</svg>
