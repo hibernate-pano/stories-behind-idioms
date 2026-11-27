@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { z } from 'zod';
 
-// Mirror of src/content/config.ts schema
+// Mirror of src/content.config.ts schema
 const schema = z.object({
   title: z.string().min(2).max(8),
   slug: z.string().regex(/^[a-z0-9-]+$/),
